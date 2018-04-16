@@ -10,7 +10,6 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
 	"github.com/rod6/tron/gateway/conf"
-	"github.com/rod6/tron/gateway/log"
 	pb "github.com/rod6/tron/pb"
 )
 
@@ -27,7 +26,7 @@ func Login(c echo.Context) error {
 
 	r, err := cn.Auth(ctx, &pb.AuthRequest{Username: username, Password: password})
 	if err != nil {
-		log.Logger.Error("call micro service 'user' error: ", err)
+		Logger.Error("call micro service 'user' error: ", err)
 		return errors.New("internal service error")
 	}
 

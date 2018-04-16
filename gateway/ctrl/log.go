@@ -1,4 +1,4 @@
-package log
+package ctrl
 
 import (
 	"github.com/labstack/echo"

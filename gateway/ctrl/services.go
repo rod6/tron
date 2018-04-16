@@ -3,7 +3,6 @@ package ctrl
 import (
 	"errors"
 
-	"github.com/rod6/tron/gateway/log"
 	"google.golang.org/grpc"
 )
 
@@ -21,7 +20,7 @@ func ConnSrv() error {
 	for name, addr := range services {
 		conn, err := grpc.Dial(addr, grpc.WithInsecure())
 		if err != nil {
-			log.Logger.Error(`connect to '%s:%s' service failed: %v`, name, addr, err)
+			Logger.Error(`connect to '%s:%s' service failed: %v`, name, addr, err)
 			return errors.New("init services connection error")
 		}
 		Connections[name] = conn

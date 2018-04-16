@@ -9,12 +9,11 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/rod6/tron/gateway/conf"
 	"github.com/rod6/tron/gateway/ctrl"
-	"github.com/rod6/tron/gateway/log"
 )
 
 func main() {
 	e := echo.New()
-	log.Logger = e.Logger
+	ctrl.Logger = e.Logger
 
 	defer ctrl.CloseConn()
 	// Connect to micro services
@@ -51,7 +50,7 @@ func main() {
 		SigningKey:    []byte(conf.SignKey),
 	}))
 
-	// curl localhost:1323/auth -H "Authorization: Bearer xxxxxx"
+	// curl localhost:1323/auth/test -H "Authorization: Bearer xxxxxx"
 	r.GET("/test", ctrl.Auth)
 
 	// Start server
