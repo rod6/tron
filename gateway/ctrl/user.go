@@ -11,12 +11,22 @@ import (
 	"github.com/labstack/echo"
 	"github.com/rod6/tron/gateway/conf"
 	pb "github.com/rod6/tron/pb"
+	"google.golang.org/grpc/metadata"
 )
 
 // Login handlers
 func Login(c echo.Context) error {
-	username := c.FormValue("username")
-	password := c.FormValue("password")
+	// Use the following 2 lines for form body
+	// username := c.FormValue("username")
+	// password := c.FormValue("password")
+
+	// Use the following code piece for json body
+	m := echo.Map{}
+	if err := c.Bind(&m); err != nil {
+		return err
+	}
+	username := m["username"].(string)
+	password := m["password"].(string)
 
 	cn := pb.NewUserClient(Connections["user"])
 
@@ -24,6 +34,8 @@ func Login(c echo.Context) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
+	// Attach rid to ctx, so that the micro service can access the same rid
+	ctx = metadata.AppendToOutgoingContext(ctx, "rid", c.Response().Header().Get(echo.HeaderXRequestID))
 	r, err := cn.Auth(ctx, &pb.AuthRequest{Username: username, Password: password})
 	if err != nil {
 		Logger.Error("call micro service 'user' error: ", err)

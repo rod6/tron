@@ -5,7 +5,7 @@ import (
 
 	"github.com/labstack/gommon/log"
 	pb "github.com/rod6/tron/pb"
-	"golang.org/x/net/context"
+	. "github.com/rod6/tron/user/internal"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -15,18 +15,8 @@ const (
 	port = ":13001"
 )
 
-type userServer struct{}
-
-func (u *userServer) Auth(ctx context.Context, aq *pb.AuthRequest) (*pb.AuthReply, error) {
-	if aq.Username == "rod" && aq.Password == "123456" {
-		return &pb.AuthReply{Authed: true}, nil
-	}
-	return &pb.AuthReply{Authed: false}, nil
-}
-
 func main() {
-	log := log.New(name)
-	log.Infof("service %s is starting at port %s", name, port)
+	Logger.Infof("service %s is starting at port %s", name, port)
 
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
@@ -34,7 +24,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	pb.RegisterUserServer(s, &userServer{})
+	pb.RegisterUserServer(s, &UserServer{})
 	// Register reflection service on gRPC server.
 	reflection.Register(s)
 	if err := s.Serve(lis); err != nil {

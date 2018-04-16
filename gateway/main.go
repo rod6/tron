@@ -7,12 +7,14 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/labstack/gommon/log"
 	"github.com/rod6/tron/gateway/conf"
 	"github.com/rod6/tron/gateway/ctrl"
 )
 
 func main() {
 	e := echo.New()
+	e.Logger.SetLevel(log.INFO)
 	ctrl.Logger = e.Logger
 
 	defer ctrl.CloseConn()
@@ -35,7 +37,7 @@ func main() {
 		})
 	})
 
-	// curl localhost:1323/login -X POST -d 'username=rod' -d 'password=123456'
+	// curl localhost:1323/login -X POST -H "Content-type: application/json" -d '{"username":"rod","password":"123456"}'
 	e.POST("/login", ctrl.Login)
 
 	// Restricted group
