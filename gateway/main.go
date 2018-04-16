@@ -30,7 +30,11 @@ func main() {
 	}}))
 
 	// Routes
-	e.GET("/", hello)
+	e.GET("/", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]string{
+			"message": "hello, world",
+		})
+	})
 
 	// curl localhost:1323/login -X POST -d 'username=rod' -d 'password=123456'
 	e.POST("/login", ctrl.Login)
@@ -52,11 +56,4 @@ func main() {
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))
-}
-
-// Handler
-func hello(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]string{
-		"hello": "world",
-	})
 }
