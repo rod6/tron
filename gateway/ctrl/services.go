@@ -2,6 +2,7 @@ package ctrl
 
 import (
 	"errors"
+	"time"
 
 	"google.golang.org/grpc"
 )
@@ -18,9 +19,9 @@ var (
 // ConnSrv connects micro service used in gateway
 func ConnSrv() error {
 	for name, addr := range services {
-		conn, err := grpc.Dial(addr, grpc.WithInsecure())
+		conn, err := grpc.Dial(addr, grpc.WithInsecure(), grpc.WithTimeout(time.Second), grpc.WithBlock())
 		if err != nil {
-			Logger.Error(`connect to '%s:%s' service failed: %v`, name, addr, err)
+			Logger.Errorf(`connect to '%s:%s' service failed: %v`, name, addr, err)
 			return errors.New("init services connection error")
 		}
 		Connections[name] = conn

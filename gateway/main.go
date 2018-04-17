@@ -20,7 +20,7 @@ func main() {
 	defer ctrl.CloseConn()
 	// Connect to micro services
 	if err := ctrl.ConnSrv(); err != nil {
-		e.Logger.Fatal("exits due to service connect error: %v", err)
+		e.Logger.Fatalf("exits due to service connect error: %v", err)
 	}
 	// Middleware
 	e.Use(middleware.Logger())
