@@ -1,4 +1,5 @@
 syntax = "proto3";
+package tron;
 
 service User {
   rpc Auth(AuthRequest) returns (AuthReply) {}
