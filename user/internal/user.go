@@ -2,7 +2,7 @@ package internal
 
 import (
 	"github.com/labstack/gommon/log"
-	. "github.com/rod6/tron/lib"
+	// . "github.com/rod6/tron/lib"
 	pb "github.com/rod6/tron/pb"
 	"golang.org/x/net/context"
 )
